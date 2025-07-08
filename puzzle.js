@@ -52,7 +52,32 @@ function dragDrop(){
 function dragEnd(){
     let currImg = currTile.src;
     let otherImg = otherTile.src;
+            document.getElementById("board").append(tile);
 
+            // Mobile Interaction (Tap to select and swap)
+            let firstTap = null;
+            tile.addEventListener("touchstart", function(e) {
+                e.preventDefault();
+                if (!window._firstTapTile) {
+                    window._firstTapTile = this;
+                    this.style.border = "2px solid red"; // Highlight selected
+                } else {
+                    otherTile = this;
+                    currTile = window._firstTapTile;
+
+                    let currImg = currTile.src;
+                    let otherImg = otherTile.src;
+
+                    currTile.src = otherImg;
+                    otherTile.src = currImg;
+
+                    turns += 1;
+                    document.getElementById("turns").innerText = turns;
+
+                    window._firstTapTile.style.border = "";
+                    window._firstTapTile = null;
+                }
+            }, { passive: false });
     currTile.src = otherImg;
     otherTile.src = currImg;
 
